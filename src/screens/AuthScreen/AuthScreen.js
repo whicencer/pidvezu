@@ -1,9 +1,27 @@
 import { StyleSheet, View, Image, TextInput, Pressable, Alert, Text } from 'react-native';
 import { useState } from 'react';
+import { auth } from '../../firebase'
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const handleLogin = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user
+        console.log('Logged in with', user.email)
+      })
+      .catch(error => Alert.alert(error.message))
+  }
+  
+  const handleSignup = () => {
+    auth.createUserWithEmailAndPassword(email, password).then(userCredentials => {
+      const user = userCredentials.user
+      console.log('Registered with', user.email)
+    }).catch(error => Alert.alert(error))
+  }
 
   return (
     <View style={styles.container}>
@@ -13,7 +31,7 @@ export default function AuthScreen() {
           style={styles.input}
           placeholderTextColor='#555'
           placeholder='E-mail'
-          onChange={(text) => setEmail(text)}
+          onChangeText={text => setEmail(text)}
           onSubmitEditing={() => console.log('confirmation code')}
           value={email}
           keyboardType='email-address'
@@ -22,15 +40,15 @@ export default function AuthScreen() {
           style={{...styles.input, marginTop: 10}}
           placeholderTextColor='#555'
           placeholder='Пароль'
-          onChange={(text) => setPassword(text)}
+          onChangeText={text => setPassword(text)}
           onSubmitEditing={() => console.log('confirmation code')}
           value={password}
           secureTextEntry={true}
         />
-        <Pressable style={styles.button} onPress={() => Alert.alert('Вхід')}>
+        <Pressable style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Вхід</Text>
         </Pressable>
-        <Pressable style={styles.buttonOutline} onPress={() => Alert.alert('Реєстрація')}>
+        <Pressable style={styles.buttonOutline} onPress={handleSignup}>
           <Text style={styles.buttonText}>Зареєструватися</Text>
         </Pressable>
       </View>
