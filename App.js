@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import AuthScreen from './src/screens/auth/AuthScreen';
+import AuthScreen from './src/screens/AuthScreen/AuthScreen';
 
 export default function App() {
   return (

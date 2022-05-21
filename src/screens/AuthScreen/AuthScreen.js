@@ -2,10 +2,8 @@ import { StyleSheet, View, Image, TextInput, Pressable, Alert, Text } from 'reac
 import { useState } from 'react';
 
 export default function AuthScreen() {
-  const [value, setValue] = useState('')
-  const onChange = (e) => {
-    setValue(e.target.value)
-  }
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   return (
     <View style={styles.container}>
@@ -15,13 +13,25 @@ export default function AuthScreen() {
           style={styles.input}
           placeholderTextColor='#555'
           placeholder='E-mail'
-          onChange={onChange}
+          onChange={(text) => setEmail(text)}
           onSubmitEditing={() => console.log('confirmation code')}
-          value={value}
+          value={email}
           keyboardType='email-address'
         />
-        <Pressable style={styles.button} onPress={() => Alert.alert('Test')}>
-          <Text style={styles.buttonText}>Далі</Text>
+        <TextInput
+          style={{...styles.input, marginTop: 10}}
+          placeholderTextColor='#555'
+          placeholder='Пароль'
+          onChange={(text) => setPassword(text)}
+          onSubmitEditing={() => console.log('confirmation code')}
+          value={password}
+          secureTextEntry={true}
+        />
+        <Pressable style={styles.button} onPress={() => Alert.alert('Вхід')}>
+          <Text style={styles.buttonText}>Вхід</Text>
+        </Pressable>
+        <Pressable style={styles.buttonOutline} onPress={() => Alert.alert('Реєстрація')}>
+          <Text style={styles.buttonText}>Зареєструватися</Text>
         </Pressable>
       </View>
     </View>
@@ -59,6 +69,16 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginTop: 20,
     backgroundColor: '#262626'
+  },
+  buttonOutline: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#262626',
+    marginTop: 10,
+    borderRadius: 4,
+    borderWidth: 2,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
   },
   buttonText: {
     color: '#fff',
