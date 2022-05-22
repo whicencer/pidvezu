@@ -1,10 +1,23 @@
 import { StyleSheet, View, Image, TextInput, Pressable, Alert, Text } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { auth } from '../../firebase'
+import { useNavigation } from '@react-navigation/core';
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if(user) {
+        navigation.replace('Home')
+      }
+    })
+    
+    return unsubscribe
+  }, [])
 
   const handleLogin = () => {
     auth
@@ -60,7 +73,10 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: '#373737',
+    paddingTop: 75
   },
   logo: {
     width: 125,
