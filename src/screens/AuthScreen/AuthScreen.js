@@ -26,14 +26,20 @@ export default function AuthScreen() {
         const user = userCredentials.user
         console.log('Logged in with', user.email)
       })
-      .catch(error => Alert.alert(error.message))
+      .catch(error => {
+        Alert.alert('Щось пішло не так')
+        return error
+      })
   }
   
   const handleSignup = () => {
+    if(password.length < 6) {
+      Alert.alert('Помилка', 'Пароль має містити не менше 6 символів')
+    }
     auth.createUserWithEmailAndPassword(email, password).then(userCredentials => {
       const user = userCredentials.user
       console.log('Registered with', user.email)
-    }).catch(error => Alert.alert(error))
+    }).catch(error => error)
   }
 
   return (
