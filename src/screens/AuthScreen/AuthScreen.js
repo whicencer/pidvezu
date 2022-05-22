@@ -2,6 +2,7 @@ import { StyleSheet, View, Image, TextInput, Pressable, Alert, Text } from 'reac
 import { useState, useEffect } from 'react';
 import { auth } from '../../firebase'
 import { useNavigation } from '@react-navigation/core';
+import { emailValidation } from '../../utils/emailValidation';
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('')
@@ -35,6 +36,9 @@ export default function AuthScreen() {
   const handleSignup = () => {
     if(password.length < 6) {
       Alert.alert('Помилка', 'Пароль має містити не менше 6 символів')
+    }
+    if(!emailValidation(email)) {
+      Alert.alert('Помилка', 'Невірна адреса електронної пошти!')
     }
     auth.createUserWithEmailAndPassword(email, password).then(userCredentials => {
       const user = userCredentials.user
