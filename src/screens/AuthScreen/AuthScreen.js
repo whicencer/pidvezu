@@ -21,16 +21,24 @@ export default function AuthScreen() {
   }, [])
 
   const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user
-        console.log('Logged in with', user.email)
-      })
-      .catch(error => {
-        Alert.alert('Щось пішло не так')
-        return error
-      })
+    if(password.length < 6 || !emailValidation(email)) {
+      Alert.alert('Помилка', 'Поле пароля або електронної пошти порожнє')
+    } else {
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then(userCredentials => {
+          const user = userCredentials.user
+          console.log('Logged in with', user.email)
+        })
+        .catch(error => {
+          if(error.code === 'auth/user-not-found') {
+            Alert.alert('Щось пішло не так', 'Невірна пошта або пароль')
+          } else {
+            Alert.alert('Щось пішло не так', 'Невідома помилка...')
+          }
+          return error
+        })
+    }
   }
   
   const handleSignup = () => {
