@@ -19,7 +19,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Logged as: {auth.currentUser?.email}</Text>
+      <Text>Авторизований як: {auth.currentUser?.email}</Text>
       <Pressable style={styles.button} onPress={handleLogout}>
         <Text style={styles.buttonText}>Вийти</Text>
       </Pressable>

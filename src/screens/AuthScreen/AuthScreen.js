@@ -36,14 +36,14 @@ export default function AuthScreen() {
   const handleSignup = () => {
     if(password.length < 6) {
       Alert.alert('Помилка', 'Пароль має містити не менше 6 символів')
-    }
-    if(!emailValidation(email)) {
+    } else if(!emailValidation(email)) {
       Alert.alert('Помилка', 'Невірна адреса електронної пошти!')
+    } else {
+      auth.createUserWithEmailAndPassword(email, password).then(userCredentials => {
+        const user = userCredentials.user
+        console.log('Registered with', user.email)
+      }).catch(error => error)
     }
-    auth.createUserWithEmailAndPassword(email, password).then(userCredentials => {
-      const user = userCredentials.user
-      console.log('Registered with', user.email)
-    }).catch(error => error)
   }
 
   return (
