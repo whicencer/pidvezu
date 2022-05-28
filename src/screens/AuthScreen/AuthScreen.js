@@ -13,7 +13,7 @@ export default function AuthScreen() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if(user) {
-        navigation.replace('Home')
+        navigation.replace('Main')
       }
     })
     
