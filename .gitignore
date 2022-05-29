@@ -8,6 +8,8 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+.expo-shared
+.idea
 web-build/
 
 # macOS
