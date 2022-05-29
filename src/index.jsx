@@ -1,16 +1,16 @@
 import React from 'react'
 
-import HomeScreen from '../HomeScreen/HomeScreen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import SearchScreen from '../SearchScreen/SearchScreen';
-import AddScreen from '../AddScreen/AddScreen'
+import SearchScreen from './screens/search-screen'
+import AddScreen from './screens/add-screen'
+import HomeScreen from './screens/home-screen'
 
 const Tab = createBottomTabNavigator()
 
-const MainScreen = () => {
+const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -27,7 +27,6 @@ const MainScreen = () => {
             iconName = focused ? 'ios-add-circle' : 'ios-add-circle-outline'
           }
 
-          // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#8b8b8b',
@@ -43,23 +42,26 @@ const MainScreen = () => {
           headerTitleStyle: {color: '#fff'},
           headerTitle: 'Головна'
         }}
-        component={HomeScreen} />
+        component={HomeScreen}
+      />
       <Tab.Screen
         name='Add'
         options={{
           tabBarLabel: 'Додати поїздку',
           headerTitle: 'Додати поїздку'
         }}
-        component={AddScreen} />
+        component={AddScreen}
+      />
       <Tab.Screen
         name='Search'
         options={{
           tabBarLabel: 'Пошук',
           headerTitle: 'Пошук'
         }}
-        component={SearchScreen} />
+        component={SearchScreen}
+      />
     </Tab.Navigator>
   )
 }
 
-export default MainScreen
+export default Tabs

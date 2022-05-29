@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import MapView from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapViewDirections from 'react-native-maps-directions';
-import PlaceInput from '../../components/PlaceInput/PlaceInput';
+import PlaceInput from '../components/place-input';
 import * as Location from 'expo-location';
 
 const SearchScreen = () => {

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
 
-import { auth } from '../../firebase'
+import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 
 const HomeScreen = () => {
