@@ -2,7 +2,7 @@ import { StyleSheet, View, Image, TextInput, Pressable, Alert, Text } from 'reac
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/core';
-import { emailValidation } from '../utils/emailValidation';
+import { emailValidation } from '../utils/validators/emailValidation';
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('')

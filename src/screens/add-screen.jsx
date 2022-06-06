@@ -2,17 +2,23 @@ import { StyleSheet, TextInput, View, Pressable, Text } from 'react-native'
 import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Platform } from 'expo-modules-core'
+import { phoneValidation } from '../utils/validators/phoneValidation'
+
+// TODO: Refactor phone validation in 59 str. so much code in component
 
 const AddScreen = () => {
-  const [name, setName] = useState('') 
-  const [date, setDate] = useState(new Date())
+  const [input, setInput] = useState({
+    name: '',
+    phone: '',
+    date: new Date(),
+  })
   const [mode, setMode] = useState('date')
   const [show, setShow] = useState(false)
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date
+    const currentDate = selectedDate || input.date
     setShow(Platform.OS === 'ios')
-    setDate(currentDate)
+    setInput({...input, date: currentDate})
 
     let tempDate = new Date(currentDate)
     let fDate = `${tempDate.getDate()}/${tempDate.getMonth()+1}/${tempDate.getFullYear()}`
@@ -32,9 +38,17 @@ const AddScreen = () => {
       <TextInput
         placeholder="Ваше ім'я"
         placeholderTextColor='#fff'
-        value={ name }
-        onChangeText={(text) => setName(text)}
+        value={ input.name }
+        onChangeText={(text) => setInput({...input, name: text})}
         style={styles.textInput}
+      />
+      <TextInput
+        placeholder="Ваш номер телефону"
+        placeholderTextColor='#fff'
+        value={ input.phone }
+        keyboardType='phone-pad'
+        onChangeText={(text) => setInput({...input, phone: text})}
+        style={{ ...styles.textInput, marginTop: 20 }}
       />
       <View style={{ display: 'flex', flexDirection: 'row' }}>
         <Pressable style={styles.button} onPress={() => showMode('date')}>
@@ -44,12 +58,22 @@ const AddScreen = () => {
           <Text style={{ color: '#fff' }}>Виберіть Час</Text>
         </Pressable>
       </View>
+      <Pressable style={styles.buttonAdd} onPress={() => {
+        if(!input.phone.length || !phoneValidation(input.phone)) {
+          alert('Виникла помилка. Невірний номер телефону')
+        } else {
+          alert('успіх')
+        }
+        console.log(input)
+      }}>
+        <Text style={{ color: '#fff' }}>Додати поїздку</Text>
+      </Pressable>
       
       {
         show && (
           <DateTimePicker
             testID='dateTimePicker'
-            value={date}
+            value={input.date}
             mode={mode}
             is24Hour={true}
             display='default'
@@ -90,5 +114,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 10,
     backgroundColor: '#262626'
+  },
+  buttonAdd: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    marginTop: 20,
+    marginHorizontal: 10,
+    backgroundColor: 'red'
   }
 })
