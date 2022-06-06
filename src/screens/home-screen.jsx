@@ -13,7 +13,7 @@ const HomeScreen = () => {
       .signOut()
       .then(() => {
         navigation.replace('Auth')
-        Alert.alert('Повідомлення', 'Ви вийшли с аккаунту')  
+        alert('Повідомлення', 'Ви вийшли с аккаунту')  
       })
       .catch(error => Alert.alert(error))
   }
