@@ -4,8 +4,6 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { Platform } from 'expo-modules-core'
 import { phoneValidation } from '../utils/validators/phoneValidation'
 
-// TODO: Refactor phone validation in 59 str. so much code in component
-
 const AddScreen = () => {
   const [input, setInput] = useState({
     name: '',
@@ -59,11 +57,7 @@ const AddScreen = () => {
         </Pressable>
       </View>
       <Pressable style={styles.buttonAdd} onPress={() => {
-        if(!input.phone.length || !phoneValidation(input.phone)) {
-          alert('Виникла помилка. Невірний номер телефону')
-        } else {
-          alert('успіх')
-        }
+        phoneValidation(input.phone, () => alert('успіх'), () => alert('помилка'))
         console.log(input)
       }}>
         <Text style={{ color: '#fff' }}>Додати поїздку</Text>
@@ -118,12 +112,13 @@ const styles = StyleSheet.create({
   buttonAdd: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 13,
+    paddingHorizontal: 40,
     borderRadius: 4,
+    width: '76%',
     elevation: 3,
     marginTop: 20,
     marginHorizontal: 10,
-    backgroundColor: 'red'
+    backgroundColor: '#434343'
   }
 })

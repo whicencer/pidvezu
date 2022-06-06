@@ -21,7 +21,7 @@ export default function AuthScreen() {
   }, [])
 
   const handleLogin = () => {
-    if(password.length < 6 || !emailValidation(email)) {
+    if(!password.length || !email.length) {
       Alert.alert('Помилка', 'Поле пароля або електронної пошти порожнє')
     } else {
       auth
@@ -31,7 +31,7 @@ export default function AuthScreen() {
           console.log('Logged in with', user.email)
         })
         .catch(error => {
-          if(error.code === 'auth/user-not-found') {
+          if(error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
             Alert.alert('Щось пішло не так', 'Невірна пошта або пароль')
           } else {
             Alert.alert('Щось пішло не так', 'Невідома помилка...')
@@ -43,15 +43,14 @@ export default function AuthScreen() {
   
   const handleSignup = () => {
     if(password.length < 6) {
-      Alert.alert('Помилка', 'Пароль має містити не менше 6 символів')
-    } else if(!emailValidation(email)) {
-      Alert.alert('Помилка', 'Невірна адреса електронної пошти!')
-    } else {
+      alert('Пароль має містити щонайменше 6 символів')
+    }
+    emailValidation(email, () => {
       auth.createUserWithEmailAndPassword(email, password).then(userCredentials => {
         const user = userCredentials.user
         console.log('Registered with', user.email)
       }).catch(error => error)
-    }
+    }, () => alert('Невірний E-mail адрес'))
   }
 
   return (
