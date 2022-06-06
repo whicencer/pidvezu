@@ -55,21 +55,27 @@ const SearchScreen = () => {
             getAddress(e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude)
             setfromCoord(e.nativeEvent.coordinate)}}
           coordinate={fromCoord}
-          opacity={0.8}
+          rotation={45}
+          opacity={.8}
           title='Звідки'
-        />
+        >
+          <View style={styles.marker2} />
+        </MapView.Marker>
         <MapView.Marker 
           draggable={true}
           onDragEnd={(e) => settoCoord(e.nativeEvent.coordinate)}
           coordinate={toCoord}
-          opacity={0.8}
+          rotation={45}
+          opacity={.8}
           title='Куди'
-          rotation={180}
-        />
+        >
+          <View style={styles.marker} />
+        </MapView.Marker>
         <MapViewDirections
           origin={fromCoord}
           destination={toCoord}
           strokeColor='#444444'
+          precision='high'
           strokeWidth={4}
           optimizeWaypoints={true}
           apikey={'AIzaSyA9mGzTwKNy_2cdcMpu_Zp3D8pH6GZ7IxY'}
@@ -90,6 +96,22 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height
   },
+  marker: {
+    backgroundColor: '#dde026',
+    width: 30,
+    height: 30,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    borderBottomLeftRadius: 50
+  },
+  marker2: {
+    backgroundColor: '#d43535',
+    width: 30,
+    height: 30,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    borderBottomLeftRadius: 50
+  }
 });
 
 export default SearchScreen

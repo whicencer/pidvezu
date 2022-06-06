@@ -48,6 +48,8 @@ const Tabs = () => {
         name='Add'
         options={{
           tabBarLabel: 'Додати поїздку',
+          headerStyle: { backgroundColor: '#222' },
+          headerTitleStyle: { color: '#fff' },
           headerTitle: 'Додати поїздку'
         }}
         component={AddScreen}
