@@ -5,7 +5,6 @@ import { Platform } from 'expo-modules-core'
 import { phoneValidation } from '../utils/validators/phoneValidation'
 import InputSpinner from "react-native-input-spinner";
 
-// TODO: name, phone, date, from / to, count of passengers
 // TODO: подумать про то как уменьшить количество логики и кода в общем
 
 const AddScreen = () => {
@@ -80,7 +79,7 @@ const AddScreen = () => {
           phoneValidation(input.phone, () => alert('успіх'), () => alert('помилка'))
           console.log(input)
         }}>
-          <Text style={{ color: '#fff' }}>Додати поїздку</Text>
+          <Text style={{ color: '#fff' }}>Створити поїздку</Text>
         </Pressable>
         
         {
