@@ -5,6 +5,8 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 
+// TODO: if user have created trips - show it on screen and add feature to "close" that trip
+
 const HomeScreen = () => {
   const navigation = useNavigation()
 
