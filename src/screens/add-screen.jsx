@@ -73,6 +73,9 @@ const AddScreen = () => {
             onChange={(num) => {
               setInput({...input, passengers: num})
             }}
+            buttonStyle={{ backgroundColor: '#202020' }}
+            inputStyle={{ backgroundColor: '#282828', color: '#fff', fontWeight: 'bold' }}
+            style={{ backgroundColor: '#202020' }}
           />
         </View>
         <Pressable style={styles.buttonAdd} onPress={() => {
