@@ -6,8 +6,10 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { Platform } from 'expo-modules-core'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Map from './road-map'
+
 import { db } from '../firebase'
 import { doc, setDoc } from 'firebase/firestore'
+import { getAuth } from "@firebase/auth";
 
 const AddTripForm = ({ input, setInput }) => {
   const [mode, setMode] = useState('date')
@@ -46,13 +48,16 @@ const AddTripForm = ({ input, setInput }) => {
   }
 
   const createTrip = () => {
-    const myDoc = doc(db, 'trips', '6NoPWIXdfqNfEDmuXugv')
+    const randomId = Math.random()
+    const myDoc = doc(db, `user_${getAuth().currentUser.uid}`, `trip_${randomId}`)
+    const globalDoc = doc(db, 'trips', `trip_${randomId}`)
   
     const docData = input
 
     setDoc(myDoc, docData)
       .then(() => {
         alert('Поїздку добавлено')
+        setDoc(globalDoc, docData)
       })
       .catch(error => {
         alert(error.message)
