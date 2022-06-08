@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import Map from '../components/map'
+import Map from '../components/road-map'
 import { useNavigation } from '@react-navigation/native'
 import { Button } from 'react-native'
 import PlaceInput from '../components/place-input'
+import { LogBox } from 'react-native';
+
+// Ignoring all logs or warnings
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const MapScreen = () => {
   const navigation = useNavigation()
@@ -25,9 +31,10 @@ const MapScreen = () => {
     <View style={styles.container}>
       <PlaceInput placeholder={'Звідки'} setCoord={setfromCoord} />
       <PlaceInput placeholder={'Куди'} setCoord={settoCoord} />
-      <Button title='dali' onPress={() => navigation.navigate('Add', {
-        data: [fromCoord, toCoord]
-      })} />
+      <Button title='dali' onPress={() => {
+        setInput({ ...input, route: [fromCoord, toCoord] })
+        navigation.navigate('Add')
+      }} />
       <Map
         fromCoord={fromCoord}
         setfromCoord={setfromCoord}
@@ -41,7 +48,5 @@ const MapScreen = () => {
 export default MapScreen
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 30,
-  }
+  container: {}
 })

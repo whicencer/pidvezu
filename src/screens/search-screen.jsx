@@ -1,7 +1,5 @@
 import React from 'react'
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import PlaceInput from '../components/place-input';
-import Map from '../components/map';
 
 const SearchScreen = () => {
   return (

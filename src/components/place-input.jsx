@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
@@ -23,5 +22,3 @@ const PlaceInput = ({ placeholder, setCoord }) => {
 }
 
 export default PlaceInput
-
-const styles = StyleSheet.create({})

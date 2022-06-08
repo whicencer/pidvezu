@@ -8,7 +8,7 @@ const AddScreen = ({ route }) => {
     phone: '',
     date: new Date(),
     passengers: 0,
-    route: route.params.data || {}
+    route: []
   })
   return (
     <View style={styles.container}>

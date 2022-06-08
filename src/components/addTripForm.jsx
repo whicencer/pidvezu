@@ -1,17 +1,31 @@
-import { StyleSheet, TextInput, View, Pressable, Text } from 'react-native'
+import { StyleSheet, TextInput, View, Pressable, Text, Button } from 'react-native'
 import React, { useState } from 'react'
 import { phoneValidation } from '../utils/validators/phoneValidation'
 import InputSpinner from "react-native-input-spinner"
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Platform } from 'expo-modules-core'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { useNavigation } from '@react-navigation/native'
+import Map from './road-map'
+import { db } from '../firebase'
+import { doc, setDoc } from 'firebase/firestore'
 
 const AddTripForm = ({ input, setInput }) => {
   const [mode, setMode] = useState('date')
   const [show, setShow] = useState(false)
+  const [mapShow, setMapShow] = useState(false)
 
-  const navigation = useNavigation()
+  const [fromCoord, setfromCoord] = useState({
+    latitude: 49.587993,
+    longitude: 34.551489,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+  const [toCoord, settoCoord] = useState({
+    latitude: 49.590695,
+    longitude: 34.548195,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || input.date
@@ -31,57 +45,81 @@ const AddTripForm = ({ input, setInput }) => {
     setMode(currentMode)
   }
 
+  const createTrip = () => {
+    const myDoc = doc(db, 'trips', '6NoPWIXdfqNfEDmuXugv')
+  
+    const docData = input
+
+    setDoc(myDoc, docData)
+      .then(() => {
+        alert('Поїздку добавлено')
+      })
+      .catch(error => {
+        alert(error.message)
+      })
+  }
+
+  const showMap = (boolean) => {
+    setMapShow(boolean)
+  }
+
   return (
     <View style={styles.formData}>
-      <Text style={styles.formTitle}>Заповніть форму</Text>
-      <TextInput
-        placeholder="Ваше ім'я"
-        placeholderTextColor='#fff'
-        value={ input.name }
-        onChangeText={(text) => setInput({...input, name: text})}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Ваш номер телефону"
-        placeholderTextColor='#fff'
-        value={ input.phone }
-        keyboardType='phone-pad'
-        onChangeText={(text) => setInput({...input, phone: text})}
-        style={{ ...styles.textInput, marginTop: 20 }}
-      />
-      <View style={{ display: 'flex', flexDirection: 'row' }}>
-        <Pressable style={styles.button} onPress={() => showMode('date')}>
-          <Text style={{ color: '#fff' }}>Виберіть дату</Text>
-        </Pressable>
-        <Pressable style={styles.mapButton} onPress={() => navigation.navigate('Map')}>
-          <Icon name='map-outline' style={{ color: '#fff', fontSize: 20 }} />
-        </Pressable>
-        <Pressable style={styles.button} onPress={() => showMode('time')}>
-          <Text style={{ color: '#fff' }}>Виберіть Час</Text>
-        </Pressable>
-      </View>
-      <View style={{ marginTop: 20, alignItems: 'center' }}>
-        <Text style={{ color: '#fff', marginBottom: 10, fontSize: 18 }}>Кількість пасажирів</Text>
-        <InputSpinner
-          max={5}
-          min={1}
-          step={1}
-          value={input.passengers}
-          skin='modern'
-          onChange={(num) => {
-            setInput({...input, passengers: num})
-          }}
-          buttonStyle={{ backgroundColor: '#202020' }}
-          inputStyle={{ backgroundColor: '#282828', color: '#fff', fontWeight: 'bold' }}
-          style={{ backgroundColor: '#202020' }}
-        />
-      </View>
-      <Pressable style={styles.buttonAdd} onPress={() => {
-        phoneValidation(input.phone, () => alert('успіх'), () => alert('помилка'))
-        console.log(input)
-      }}>
-        <Text style={{ color: '#fff' }}>Створити поїздку</Text>
-      </Pressable>
+      {
+        !mapShow && (
+          <View style={{ alignItems: 'center' }}>
+            <Text style={styles.formTitle}>Заповніть форму</Text>
+            <TextInput
+              placeholder="Ваше ім'я"
+              placeholderTextColor='#fff'
+              value={ input.name }
+              onChangeText={(text) => setInput({...input, name: text})}
+              style={styles.textInput}
+            />
+            <TextInput
+              placeholder="Ваш номер телефону"
+              placeholderTextColor='#fff'
+              value={ input.phone }
+              keyboardType='phone-pad'
+              onChangeText={(text) => setInput({...input, phone: text})}
+              style={{ ...styles.textInput, marginTop: 20 }}
+            />
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
+              <Pressable style={styles.button} onPress={() => showMode('date')}>
+                <Text style={{ color: '#fff' }}>Виберіть дату</Text>
+              </Pressable>
+              <Pressable style={styles.mapButton} onPress={() => showMap(true)}>
+                <Icon name='map-outline' style={{ color: '#fff', fontSize: 20 }} />
+              </Pressable>
+              <Pressable style={styles.button} onPress={() => showMode('time')}>
+                <Text style={{ color: '#fff' }}>Виберіть Час</Text>
+              </Pressable>
+            </View>
+            <View style={{ marginTop: 20, alignItems: 'center' }}>
+              <Text style={{ color: '#fff', marginBottom: 10, fontSize: 18 }}>Кількість пасажирів</Text>
+              <InputSpinner
+                max={5}
+                min={1}
+                step={1}
+                value={input.passengers}
+                skin='modern'
+                onChange={(num) => {
+                  setInput({...input, passengers: num})
+                }}
+                buttonStyle={{ backgroundColor: '#202020' }}
+                inputStyle={{ backgroundColor: '#282828', color: '#fff', fontWeight: 'bold' }}
+                style={{ backgroundColor: '#202020' }}
+              />
+            </View>
+            <Pressable style={styles.buttonAdd} onPress={() => {
+              phoneValidation(input.phone, () => alert('успіх'), () => alert('помилка'))
+              createTrip()
+            }}>
+              <Text style={{ color: '#fff' }}>Створити поїздку</Text>
+            </Pressable>
+          </View>
+        )
+      }
       
       {
         show && (
@@ -93,6 +131,17 @@ const AddTripForm = ({ input, setInput }) => {
             display='default'
             onChange={onChange}
           />
+        )
+      }
+      {
+        mapShow && (
+          <View>
+            <Button title={'Далі'} onPress={() => {
+              setInput({...input, route: [fromCoord, toCoord]})
+              showMap(false)
+            }} />
+            <Map fromCoord={fromCoord} setfromCoord={setfromCoord} toCoord={toCoord} settoCoord={settoCoord} />
+          </View>
         )
       }
     </View>
