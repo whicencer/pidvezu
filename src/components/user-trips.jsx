@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
-import * as Location from 'expo-location'
 import React from 'react'
 
 const UserTrips = ({ trip }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>from - to</Text>
+      <Text style={styles.text}>{trip.route}</Text>
       <View style={{ marginTop: 5 }}>
         <Text style={{ ...styles.text, ...styles.subText }}>Кількість пасажирів: {trip.passengers}</Text>
         <Text style={{ ...styles.text, ...styles.subText }}>Номер телефону: {trip.phone}</Text>
