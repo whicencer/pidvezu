@@ -9,5 +9,9 @@ export const getAddress = async (fromCoord, toCoord) => {
     latitude: toCoord.latitude,
     longitude: toCoord.longitude
   })
-  return (`${from[0].city}, ${from[0].district}, ${from[0].street}, ${from[0].streetNumber} - ${to[0].city}, ${to[0].district}, ${to[0].street}, ${to[0].streetNumber}`)
+
+  const fromString = `${from[0].city}, ${from[0].district}, ${from[0].street}, ${from[0].streetNumber}`
+  const toString = `${to[0].city}, ${to[0].district}, ${to[0].street}, ${to[0].streetNumber}`
+
+  return (`${fromString} - ${toString}`)
 }
