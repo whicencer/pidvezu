@@ -10,6 +10,7 @@ import Map from './road-map'
 import { db } from '../firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { getAuth } from "@firebase/auth";
+import { getAddress } from '../utils/getAddress'
 
 const AddTripForm = ({ input, setInput }) => {
   const [mode, setMode] = useState('date')
@@ -142,7 +143,10 @@ const AddTripForm = ({ input, setInput }) => {
         mapShow && (
           <View>
             <Button title={'Далі'} onPress={() => {
-              setInput({...input, route: [fromCoord, toCoord]})
+              getAddress(fromCoord, toCoord)
+                .then(data => {
+                  setInput({ ...input, route: data })
+                })
               showMap(false)
             }} />
             <Map fromCoord={fromCoord} setfromCoord={setfromCoord} toCoord={toCoord} settoCoord={settoCoord} />

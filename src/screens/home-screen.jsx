@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
+import UserTrips from '../components/user-trips'
 
 import { getDocs, collection } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
-
 import { auth, db } from '../firebase'
+
 import { useNavigation } from '@react-navigation/native'
 
 const HomeScreen = () => {
@@ -40,16 +41,10 @@ const HomeScreen = () => {
         <Text style={styles.buttonText}>Вийти</Text>
       </Pressable>
 
-      <View styles={styles.trips}>
+      <View style={styles.trips}>
         {
           userTrips?.map((el, key) => {
-            return (
-              <View key={key}>
-                <Text>{el.name}</Text>
-                <Text>{el.passengers}</Text>
-                <Text>{el.phone}</Text>
-              </View>
-            )
+            return <UserTrips key={key} trip={el} />
           })
         }
       </View>
@@ -66,7 +61,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 75
   },
-  trips: {},
+  trips: {
+    width: '95%',
+    height: '100%',
+    marginTop: 20,
+    padding: 20
+  },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
