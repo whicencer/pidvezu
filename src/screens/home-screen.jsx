@@ -1,14 +1,27 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
 
-import { auth } from '../firebase'
-import { useNavigation } from '@react-navigation/native'
+import { getDocs, collection } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
 
-// TODO: if user have created trips - show it on screen and add feature to "close" that trip
+import { auth, db } from '../firebase'
+import { useNavigation } from '@react-navigation/native'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
+  const [userTrips, setUserTrips] = useState()
+  
+  useEffect(() => {
+    getDocs(collection(db, `user_${getAuth().currentUser.uid}`))
+      .then((snapshot) => {
+        setUserTrips(
+          snapshot.docs.map(doc => {
+            return doc.data()
+          })
+        )
+      })
+  }, [])
 
   const handleLogout = () => {
     auth
@@ -26,6 +39,20 @@ const HomeScreen = () => {
       <Pressable style={styles.button} onPress={handleLogout}>
         <Text style={styles.buttonText}>Вийти</Text>
       </Pressable>
+
+      <View styles={styles.trips}>
+        {
+          userTrips?.map((el, key) => {
+            return (
+              <View key={key}>
+                <Text>{el.name}</Text>
+                <Text>{el.passengers}</Text>
+                <Text>{el.phone}</Text>
+              </View>
+            )
+          })
+        }
+      </View>
     </View>
   )
 }
@@ -39,6 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 75
   },
+  trips: {},
   button: {
     alignItems: 'center',
     justifyContent: 'center',
