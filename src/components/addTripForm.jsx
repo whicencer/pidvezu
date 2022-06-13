@@ -118,8 +118,11 @@ const AddTripForm = ({ input, setInput }) => {
               />
             </View>
             <Pressable style={styles.buttonAdd} onPress={() => {
-              phoneValidation(input.phone, () => alert('успіх'), () => alert('помилка'))
-              createTrip()
+              if(input.name.length < 1) {
+                alert('Помилка')
+              } else {
+                phoneValidation(input.phone, () => createTrip(), () => alert('помилка'))
+              }
             }}>
               <Text style={{ color: '#fff' }}>Створити поїздку</Text>
             </Pressable>

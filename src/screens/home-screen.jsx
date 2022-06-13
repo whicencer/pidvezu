@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
 import UserTrips from '../components/user-trips'
@@ -41,13 +41,16 @@ const HomeScreen = () => {
         <Text style={styles.buttonText}>Вийти</Text>
       </Pressable>
 
-      <View style={styles.trips}>
-        {
-          userTrips?.map((el, key) => {
-            return <UserTrips key={key} trip={el} />
-          })
-        }
-      </View>
+      <ScrollView style={{ marginVertical: 20 }}>
+        <Text style={{ fontSize: 24, color: '#fff', fontWeight: 'bold' }}>Мої поїздки:</Text>
+        <View style={styles.trips}>
+          {
+            userTrips?.map((el, key) => {
+              return <UserTrips key={key} trip={el} />
+            })
+          }
+        </View>
+      </ScrollView>
     </View>
   )
 }
