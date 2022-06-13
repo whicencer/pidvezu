@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native'
 import React, { useState } from 'react'
 import AddTripForm from '../components/addTripForm'
 
-const AddScreen = ({ route }) => {
+const AddScreen = () => {
   const [input, setInput] = useState({
     name: '',
     phone: '',

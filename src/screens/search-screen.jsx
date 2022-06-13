@@ -1,11 +1,37 @@
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Dimensions, ScrollView } from 'react-native';
+
+import { getDocs, collection } from 'firebase/firestore'
+import { db } from '../firebase'
+
+import UserTrips from '../components/user-trips';
 
 const SearchScreen = () => {
+  const [trips, setTrips] = useState([])
+
+  useEffect(() => {
+    getDocs(collection(db, 'trips'))
+      .then((snapshot) => {
+        setTrips(
+          snapshot.docs.map(doc => {
+            return doc.data()
+          })
+        )
+      })
+  }, [])
+
   return (
-    <View style={{ marginTop: 10, flex: 1 }}>
-      <Text>Тут просто должна быть карта с доступными водителями</Text>
-    </View>
+    <ScrollView style={{ marginVertical: 20 }}>
+      <View style={{ flex: 1, margin: 20 }}>
+        {
+          trips.length ? trips.map((trip, key) => {
+            return (
+              <UserTrips trip={trip} key={key} />
+            )
+          }) : <Text style={{ fontSize: 16, color: '#000' }}>Немає активних поїздок...</Text>
+        }
+      </View>
+    </ScrollView>
   )
 }
 

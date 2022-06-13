@@ -11,6 +11,7 @@ import { db } from '../firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { getAuth } from "@firebase/auth";
 import { getAddress } from '../utils/getAddress'
+import { useNavigation } from '@react-navigation/native'
 
 const AddTripForm = ({ input, setInput }) => {
   const [mode, setMode] = useState('date')
@@ -30,7 +31,7 @@ const AddTripForm = ({ input, setInput }) => {
     longitudeDelta: 0.0421,
   });
 
-  const onChange = (event, selectedDate) => {
+  const onChange = (_, selectedDate) => {
     const currentDate = selectedDate || input.date
     setShow(Platform.OS === 'ios')
     setInput({...input, date: currentDate})
@@ -66,6 +67,7 @@ const AddTripForm = ({ input, setInput }) => {
   }
 
   const showMap = (boolean) => {
+    alert('Будь ласка, при створенні поїздки пишіть повний адрес с вулицею')
     setMapShow(boolean)
   }
 
@@ -145,13 +147,22 @@ const AddTripForm = ({ input, setInput }) => {
       {
         mapShow && (
           <View>
-            <Button title={'Далі'} onPress={() => {
-              getAddress(fromCoord, toCoord)
-                .then(data => {
-                  setInput({ ...input, route: data })
-                })
-              showMap(false)
-            }} />
+            <View>
+              <Pressable onPress={() => {
+                getAddress(fromCoord, toCoord)
+                  .then(data => {
+                    setInput({ ...input, route: data })
+                  })
+                showMap(false)
+              }} style={{ ...styles.button, backgroundColor: 'lightblue' }}>
+                <Text>Далі</Text>
+              </Pressable>
+              <Pressable onPress={() => {
+                setMapShow(false)
+              }} style={{ ...styles.button, backgroundColor: '#ff7070', marginTop: 5 }}>
+                <Text>Назад</Text>
+              </Pressable>
+            </View>
             <Map fromCoord={fromCoord} setfromCoord={setfromCoord} toCoord={toCoord} settoCoord={settoCoord} />
           </View>
         )

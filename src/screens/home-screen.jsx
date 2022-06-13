@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
-  const [userTrips, setUserTrips] = useState()
+  const [userTrips, setUserTrips] = useState([])
   
   useEffect(() => {
     getDocs(collection(db, `user_${getAuth().currentUser.uid}`))
@@ -29,7 +29,7 @@ const HomeScreen = () => {
       .signOut()
       .then(() => {
         navigation.replace('Auth')
-        alert('Повідомлення', 'Ви вийшли с аккаунту')  
+        alert('Ви вийшли с аккаунту')  
       })
       .catch(error => Alert.alert(error))
   }
@@ -45,9 +45,9 @@ const HomeScreen = () => {
         <Text style={{ fontSize: 24, color: '#fff', fontWeight: 'bold' }}>Мої поїздки:</Text>
         <View style={styles.trips}>
           {
-            userTrips?.map((el, key) => {
+            userTrips.length ? userTrips.map((el, key) => {
               return <UserTrips key={key} trip={el} />
-            })
+            }) : <Text style={{ fontSize: 16, color: '#f0f0f0' }}>Немає...</Text>
           }
         </View>
       </ScrollView>
@@ -65,10 +65,12 @@ const styles = StyleSheet.create({
     paddingTop: 75
   },
   trips: {
-    width: '95%',
+    width: '100%',
     height: '100%',
     marginTop: 20,
-    padding: 20
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   button: {
     alignItems: 'center',
