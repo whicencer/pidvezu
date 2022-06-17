@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "pidvezu",
-    "slug": "pidvezu",
+    "name": "Pidvezu",
+    "slug": "Pidvezu",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,6 +21,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "pidvezuprojectapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
