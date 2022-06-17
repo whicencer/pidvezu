@@ -151,7 +151,7 @@ const AddTripForm = ({ input, setInput }) => {
               <Pressable onPress={() => {
                 getAddress(fromCoord, toCoord)
                   .then(data => {
-                    setInput({ ...input, route: data })
+                    setInput({ ...input, route: data, fromCoord: fromCoord, toCoord: toCoord })
                   })
                 showMap(false)
               }} style={{ ...styles.button, backgroundColor: 'lightblue' }}>

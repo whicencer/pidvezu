@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, ScrollView, TextInput } from 'react-native';
 
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../firebase'
@@ -8,6 +8,7 @@ import UserTrips from '../components/user-trips';
 
 const SearchScreen = () => {
   const [trips, setTrips] = useState([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     getDocs(collection(db, 'trips'))
@@ -20,14 +21,30 @@ const SearchScreen = () => {
       })
   }, [])
 
+  const filterBy = (data, field, value) => {
+    value = value.replace(/\,|->/g, '').toLowerCase();
+    return data.filter(item => {
+      item[field] = item[field].replace(/\,|->/g, '').toLowerCase()
+
+      return item[field].includes(value)
+    })
+  }
+
+  const filteredData = filterBy(trips, 'route', search) || trips
+
   return (
     <ScrollView style={{ marginVertical: 20 }}>
       <View style={{ flex: 1, margin: 20 }}>
+        <TextInput
+          placeholderTextColor='#555'
+          placeholder='Пошук...'
+          style={styles.input}
+          value={search}
+          onChangeText={text => setSearch(text)}
+        />
         {
-          trips.length ? trips.map((trip, key) => {
-            return (
-              <UserTrips trip={trip} key={key} />
-            )
+          filteredData?.length ? filteredData.map((trip, key) => {
+            return <UserTrips trip={trip} key={key} />
           }) : <Text style={{ fontSize: 16, color: '#000' }}>Немає активних поїздок...</Text>
         }
       </View>
@@ -36,3 +53,11 @@ const SearchScreen = () => {
 }
 
 export default SearchScreen
+
+const styles = StyleSheet.create({
+  input: {
+    elevation: 1,
+    padding: 10,
+    marginBottom: 10
+  }
+})

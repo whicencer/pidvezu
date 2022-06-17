@@ -51,7 +51,7 @@ const Map = ({ fromCoord, setfromCoord, toCoord, settoCoord }) => {
             precision='high'
             strokeWidth={4}
             optimizeWaypoints={true}
-            apikey={'AIzaSyA9mGzTwKNy_2cdcMpu_Zp3D8pH6GZ7IxY'}
+            apikey={'AIzaSyCVZRzqHA7Pyen3uXV2jHyTcAjy7oLb6Vc'}
           />
         </MapView>
       </View>

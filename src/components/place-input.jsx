@@ -10,7 +10,7 @@ const PlaceInput = ({ placeholder, setCoord }) => {
         setCoord({ latitude: details.geometry.location.lat, longitude: details.geometry.location.lng })
       }}
       query={{
-        key: 'AIzaSyA9mGzTwKNy_2cdcMpu_Zp3D8pH6GZ7IxY',
+        key: 'AIzaSyCVZRzqHA7Pyen3uXV2jHyTcAjy7oLb6Vc',
         language: 'uk'
       }}
       styles={{
