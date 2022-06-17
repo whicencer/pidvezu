@@ -67,7 +67,9 @@ const AddTripForm = ({ input, setInput }) => {
   }
 
   const showMap = (boolean) => {
-    alert('Будь ласка, при створенні поїздки пишіть повний адрес с вулицею')
+    if(boolean === true) {
+      alert('Будь ласка, при створенні поїздки пишіть повний адрес с вулицею')
+    }
     setMapShow(boolean)
   }
 

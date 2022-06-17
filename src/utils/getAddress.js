@@ -1,6 +1,7 @@
 import * as Location from 'expo-location';
 
 export const getAddress = async (fromCoord, toCoord) => {
+  (await Location.requestForegroundPermissionsAsync())
   const from = await Location.reverseGeocodeAsync({
     latitude: fromCoord.latitude,
     longitude: fromCoord.longitude
