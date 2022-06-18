@@ -69,8 +69,6 @@ const styles = StyleSheet.create({
     height: '100%',
     marginTop: 20,
     padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   button: {
     alignItems: 'center',

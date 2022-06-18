@@ -24,7 +24,7 @@ const SearchScreen = () => {
   const filterBy = (data, field, value) => {
     value = value.replace(/\,|->/g, '').toLowerCase();
     return data.filter(item => {
-      item[field] = item[field].replace(/\,|->/g, '').toLowerCase()
+      item[field] = item[field].replace(/\,/g, '').toLowerCase()
 
       return item[field].includes(value)
     })

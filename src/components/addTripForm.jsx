@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View, Pressable, Text, Button } from 'react-native'
+import { StyleSheet, TextInput, View, Pressable, Text, Button, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { phoneValidation } from '../utils/validators/phoneValidation'
 import InputSpinner from "react-native-input-spinner"
@@ -12,6 +12,7 @@ import { doc, setDoc } from 'firebase/firestore'
 import { getAuth } from "@firebase/auth";
 import { getAddress } from '../utils/getAddress'
 import { useNavigation } from '@react-navigation/native'
+import PlaceInput from './place-input'
 
 const AddTripForm = ({ input, setInput }) => {
   const [mode, setMode] = useState('date')
@@ -67,9 +68,6 @@ const AddTripForm = ({ input, setInput }) => {
   }
 
   const showMap = (boolean) => {
-    if(boolean === true) {
-      alert('Будь ласка, при створенні поїздки пишіть повний адрес с вулицею')
-    }
     setMapShow(boolean)
   }
 
@@ -148,7 +146,9 @@ const AddTripForm = ({ input, setInput }) => {
       }
       {
         mapShow && (
-          <View>
+          <View style={{ width: Dimensions.get('window').width-20 }}>
+            <PlaceInput placeholder={'Звідки'} setCoord={setfromCoord} />
+            <PlaceInput placeholder={'Куди'} setCoord={settoCoord} />
             <View>
               <Pressable onPress={() => {
                 getAddress(fromCoord, toCoord)
@@ -156,16 +156,15 @@ const AddTripForm = ({ input, setInput }) => {
                     setInput({ ...input, route: data, fromCoord: fromCoord, toCoord: toCoord })
                   })
                 showMap(false)
-              }} style={{ ...styles.button, backgroundColor: 'lightblue' }}>
+              }} style={{ ...styles.button, backgroundColor: '#f2faf2' }}>
                 <Text>Далі</Text>
               </Pressable>
               <Pressable onPress={() => {
                 setMapShow(false)
-              }} style={{ ...styles.button, backgroundColor: '#ff7070', marginTop: 5 }}>
+              }} style={{ ...styles.button, backgroundColor: '#faf1fa', marginTop: 5 }}>
                 <Text>Назад</Text>
               </Pressable>
             </View>
-            <Map fromCoord={fromCoord} setfromCoord={setfromCoord} toCoord={toCoord} settoCoord={settoCoord} />
           </View>
         )
       }
