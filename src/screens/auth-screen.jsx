@@ -1,8 +1,10 @@
-import { StyleSheet, View, Image, TextInput, Pressable, Alert, Text } from 'react-native';
+import { StyleSheet, View, Image, Pressable, Alert, Text } from 'react-native';
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/core';
 import { emailValidation } from '../utils/validators/emailValidation';
+import Button from '../components/ui/Button';
+import Input from '../components/ui/TextInput'
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('')
@@ -49,7 +51,9 @@ export default function AuthScreen() {
       auth.createUserWithEmailAndPassword(email, password).then(userCredentials => {
         const user = userCredentials.user
         console.log('Registered with', user.email)
-      }).catch(error => error)
+      }).catch(error => {
+        error.code === 'auth/email-already-in-use' && alert('Аккаунт з таким E-mail вже існує')
+      })
     }, () => alert('Невірний E-mail адрес'))
   }
 
@@ -57,30 +61,26 @@ export default function AuthScreen() {
     <View style={styles.container}>
       <Image style={styles.logo} source={require('../../assets/splash.png')} />
       <View style={styles.content}>
-        <TextInput
-          style={styles.input}
-          placeholderTextColor='#555'
-          placeholder='E-mail'
-          onChangeText={text => setEmail(text)}
-          onSubmitEditing={() => console.log('confirmation code')}
-          value={email}
+        <Input
+          changeHandler={text => setEmail(text)}
+          placeholder={{ color: '#6A686F', text: 'Введіть E-mail' }}
           keyboardType='email-address'
+          secure={false}
+          value={email}
         />
-        <TextInput
-          style={{...styles.input, marginTop: 10}}
-          placeholderTextColor='#555'
-          placeholder='Пароль'
-          onChangeText={text => setPassword(text)}
-          onSubmitEditing={() => console.log('confirmation code')}
+        <Input
+          changeHandler={text => setPassword(text)}
+          placeholder={{ color: '#6A686F', text: 'Введіть Пароль (Не менше 6 символів)' }}
+          secure={true}
           value={password}
-          secureTextEntry={true}
         />
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Вхід</Text>
-        </Pressable>
-        <Pressable style={styles.buttonOutline} onPress={handleSignup}>
-          <Text style={styles.buttonText}>Зареєструватися</Text>
-        </Pressable>
+        
+        <View style={{ marginTop: 20 }}>
+          <Button clickHandler={handleLogin} text={'Увійти в аккаунт'} />
+          <Pressable style={styles.buttonOutline} onPress={handleSignup}>
+            <Text style={styles.buttonText}>Створити аккаунт</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -92,48 +92,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: '#373737',
+    backgroundColor: '#16151C',
     paddingTop: 75
   },
   logo: {
     width: 125,
     height: 125,
   },
-  input: {
-    backgroundColor: '#262626',
-    width: 350,
-    height: 60,
-    borderRadius: 15,
-    color: '#fff',
-    paddingLeft: 20,
-    fontSize: 20
-  },
   content: {
     marginTop: 100,
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    marginTop: 20,
-    backgroundColor: '#262626'
   },
   buttonOutline: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#262626',
-    marginTop: 10,
-    borderRadius: 4,
+    borderColor: '#2A2631',
+    marginTop: 14,
     borderWidth: 2,
-    paddingVertical: 12,
+    paddingVertical: 7,
     paddingHorizontal: 32,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 17,
-    fontWeight: 'bold'
+    color: '#ABA7B2',
+    fontSize: 16,
   }
 });

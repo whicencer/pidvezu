@@ -4,7 +4,7 @@ import React from 'react'
 const UserTrips = ({ trip }) => {
   const date = new Date(trip.date.seconds * 1000)
 
-  const stringDate = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()} о ${date.getHours()}:${date.getMinutes()}`
+  const stringDate = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()} о ${date.getHours()}:${date.getMinutes().toString().length === 1 ? `${date.getMinutes()}0` : date.getMinutes()}`
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{trip.route}</Text>

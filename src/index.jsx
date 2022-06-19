@@ -38,8 +38,8 @@ const Tabs = () => {
         name='Home'
         options={{
           tabBarLabel: 'Головна',
-          headerStyle: { backgroundColor: '#222' },
-          headerTitleStyle: {color: '#fff'},
+          headerStyle: { backgroundColor: '#121118' },
+          headerTitleStyle: {color: 'red'},
           headerTitle: 'Головна'
         }}
         component={HomeScreen}
@@ -48,8 +48,8 @@ const Tabs = () => {
         name='Add'
         options={{
           tabBarLabel: 'Додати поїздку',
-          headerStyle: { backgroundColor: '#222' },
-          headerTitleStyle: { color: '#fff' },
+          headerStyle: { backgroundColor: '#121118' },
+          headerTitleStyle: { color: 'red' },
           headerTitle: 'Додати поїздку'
         }}
         component={AddScreen}

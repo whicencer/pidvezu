@@ -19,6 +19,8 @@ const AddTripForm = ({ input, setInput }) => {
   const [show, setShow] = useState(false)
   const [mapShow, setMapShow] = useState(false)
 
+  const navigation = useNavigation() 
+
   const [fromCoord, setfromCoord] = useState({
     latitude: 49.587993,
     longitude: 34.551489,
@@ -36,13 +38,6 @@ const AddTripForm = ({ input, setInput }) => {
     const currentDate = selectedDate || input.date
     setShow(Platform.OS === 'ios')
     setInput({...input, date: currentDate})
-
-    let tempDate = new Date(currentDate)
-    let fDate = `${tempDate.getDate()}/${tempDate.getMonth()+1}/${tempDate.getFullYear()}`
-    let fTime = `${tempDate.getHours()}:${tempDate.getMinutes()}`
-
-    // console.log(currentDate >= Date.now()) // delete our trip
-    // console.log(fDate, fTime)
   }
 
   const showMode = currentMode => {
@@ -59,16 +54,14 @@ const AddTripForm = ({ input, setInput }) => {
 
     setDoc(myDoc, docData)
       .then(() => {
-        alert('Поїздку добавлено')
         setDoc(globalDoc, docData)
+        navigation.navigate('Home')
+        alert('Поїздку добавлено')
       })
       .catch(error => {
         alert(error.message)
       })
-  }
 
-  const showMap = (boolean) => {
-    setMapShow(boolean)
   }
 
   return (
@@ -96,7 +89,7 @@ const AddTripForm = ({ input, setInput }) => {
               <Pressable style={styles.button} onPress={() => showMode('date')}>
                 <Text style={{ color: '#fff' }}>Виберіть дату</Text>
               </Pressable>
-              <Pressable style={styles.mapButton} onPress={() => showMap(true)}>
+              <Pressable style={styles.mapButton} onPress={() => setMapShow(true)}>
                 <Icon name='map-outline' style={{ color: '#fff', fontSize: 20 }} />
               </Pressable>
               <Pressable style={styles.button} onPress={() => showMode('time')}>
@@ -155,7 +148,7 @@ const AddTripForm = ({ input, setInput }) => {
                   .then(data => {
                     setInput({ ...input, route: data, fromCoord: fromCoord, toCoord: toCoord })
                   })
-                showMap(false)
+                setMapShow(false)
               }} style={{ ...styles.button, backgroundColor: '#f2faf2' }}>
                 <Text>Далі</Text>
               </Pressable>
