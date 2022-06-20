@@ -14,8 +14,7 @@ const PlaceInput = ({ placeholder, setCoord }) => {
         language: 'uk'
       }}
       styles={{
-        container: { flex: 0, width: '100%', zIndex: 1 },
-        listView: { backgroundColor: '#fff' }
+        container: { flex: 0, width: '100%', zIndex: 1, },
       }}
     />
   )

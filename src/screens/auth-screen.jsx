@@ -63,14 +63,14 @@ export default function AuthScreen() {
       <View style={styles.content}>
         <Input
           changeHandler={text => setEmail(text)}
-          placeholder={{ color: '#6A686F', text: 'Введіть E-mail' }}
+          placeholder={'Введіть E-mail'}
           keyboardType='email-address'
           secure={false}
           value={email}
         />
         <Input
           changeHandler={text => setPassword(text)}
-          placeholder={{ color: '#6A686F', text: 'Введіть Пароль (Не менше 6 символів)' }}
+          placeholder={'Введіть Пароль (Не менше 6 символів)'}
           secure={true}
           value={password}
         />

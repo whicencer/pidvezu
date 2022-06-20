@@ -72,14 +72,14 @@ const AddTripForm = ({ input, setInput }) => {
             <Text style={styles.formTitle}>Заповніть форму</Text>
             <TextInput
               placeholder="Ваше ім'я"
-              placeholderTextColor='#fff'
+              placeholderTextColor='#6A686F'
               value={ input.name }
               onChangeText={(text) => setInput({...input, name: text})}
               style={styles.textInput}
             />
             <TextInput
               placeholder="Ваш номер телефону"
-              placeholderTextColor='#fff'
+              placeholderTextColor='#6A686F'
               value={ input.phone }
               keyboardType='phone-pad'
               onChangeText={(text) => setInput({...input, phone: text})}
@@ -107,9 +107,9 @@ const AddTripForm = ({ input, setInput }) => {
                 onChange={(num) => {
                   setInput({...input, passengers: num})
                 }}
-                buttonStyle={{ backgroundColor: '#202020' }}
-                inputStyle={{ backgroundColor: '#282828', color: '#fff', fontWeight: 'bold' }}
-                style={{ backgroundColor: '#202020' }}
+                buttonStyle={{ backgroundColor: '#2A2631' }}
+                inputStyle={{ backgroundColor: '#6A686F', color: '#fff', fontWeight: 'bold' }}
+                style={{ backgroundColor: '#2A2631' }}
               />
             </View>
             <Pressable style={styles.buttonAdd} onPress={() => {
@@ -149,13 +149,13 @@ const AddTripForm = ({ input, setInput }) => {
                     setInput({ ...input, route: data, fromCoord: fromCoord, toCoord: toCoord })
                   })
                 setMapShow(false)
-              }} style={{ ...styles.button, backgroundColor: '#f2faf2' }}>
-                <Text>Далі</Text>
+              }} style={{ ...styles.button, backgroundColor: '#2A2631' }}>
+                <Text style={{ color: '#fff' }}>Далі</Text>
               </Pressable>
               <Pressable onPress={() => {
                 setMapShow(false)
-              }} style={{ ...styles.button, backgroundColor: '#faf1fa', marginTop: 5 }}>
-                <Text>Назад</Text>
+              }} style={{ ...styles.button, backgroundColor: '#2A2631', marginTop: 5 }}>
+                <Text style={{ color: '#fff' }}>Назад</Text>
               </Pressable>
             </View>
           </View>
@@ -169,14 +169,14 @@ export default AddTripForm
 
 const styles = StyleSheet.create({
   formData: {
-    backgroundColor: '#292929',
+    backgroundColor: '#111016',
     borderRadius: 10,
     paddingVertical: 30,
     paddingHorizontal: 15,
     display: 'flex',
     justifyContent: 'center',
     elevation: 5,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   formTitle: {
     color: '#fff',
@@ -185,11 +185,11 @@ const styles = StyleSheet.create({
     paddingBottom: 30
   },
   textInput: {
-    backgroundColor: '#262626',
+    backgroundColor: '#2A2631',
     width: 350,
     height: 50,
     borderRadius: 15,
-    color: '#fff',
+    color: '#6A686F',
     paddingLeft: 10,
     fontSize: 16
   },
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 50,
     paddingHorizontal: 20,
-    backgroundColor: '#262626'
+    backgroundColor: '#2A2631'
   },
   button: {
     alignItems: 'center',
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginTop: 20,
     marginHorizontal: 10,
-    backgroundColor: '#262626'
+    backgroundColor: '#2A2631'
   },
   buttonAdd: {
     alignItems: 'center',
@@ -217,9 +217,8 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     paddingHorizontal: 60,
     borderRadius: 4,
-    elevation: 3,
     marginTop: 20,
     marginHorizontal: 10,
-    backgroundColor: '#434343'
+    backgroundColor: '#2A2631'
   }
 })

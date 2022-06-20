@@ -1,26 +1,30 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable'
+import React, { useEffect } from 'react'
 import UserTrips from '../components/user-trips'
 
 import { getDocs, collection } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { auth, db } from '../firebase'
 
+import { useSelector, useDispatch } from 'react-redux'
+
 import { useNavigation } from '@react-navigation/native'
+import Button from '../components/ui/Button'
+import { addTrip } from '../store/reducers/trips'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
-  const [userTrips, setUserTrips] = useState([])
+  const { trips } = useSelector(state => state.trips)
+  const dispatch = useDispatch()
   
   useEffect(() => {
     getDocs(collection(db, `user_${getAuth().currentUser.uid}`))
       .then((snapshot) => {
-        setUserTrips(
+        dispatch(addTrip(
           snapshot.docs.map(doc => {
             return doc.data()
           })
-        )
+        ))
       })
   }, [])
 
@@ -36,16 +40,14 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Авторизований як: {auth.currentUser?.email}</Text>
-      <Pressable style={styles.button} onPress={handleLogout}>
-        <Text style={styles.buttonText}>Вийти</Text>
-      </Pressable>
+      <Text style={{ color: '#FFF', fontWeight: '600', fontSize: 16 }}>Авторизований як: {auth.currentUser?.email}</Text>
+      <Button text={'Вийти'} clickHandler={handleLogout} />
 
       <ScrollView style={{ marginVertical: 20 }}>
-        <Text style={{ fontSize: 24, color: '#fff', fontWeight: 'bold' }}>Мої поїздки:</Text>
+        <Text style={{ fontSize: 24, color: '#fff', fontWeight: 'bold', marginLeft: 25 }}>Мої поїздки:</Text>
         <View style={styles.trips}>
           {
-            userTrips.length ? userTrips.map((el, key) => {
+            trips?.length ? trips?.map((el, key) => {
               return <UserTrips key={key} trip={el} />
             }) : <Text style={{ fontSize: 16, color: '#f0f0f0' }}>Немає...</Text>
           }
@@ -67,8 +69,8 @@ const styles = StyleSheet.create({
   trips: {
     width: '100%',
     height: '100%',
-    marginTop: 20,
     padding: 20,
+    paddingBottom: 50
   },
   button: {
     alignItems: 'center',

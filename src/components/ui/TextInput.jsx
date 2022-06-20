@@ -5,8 +5,8 @@ const Input = ({ placeholder, changeHandler, value, secure, keyboardType }) => {
   return (
     <TextInput
       style={{...styles.input, marginTop: 10}}
-      placeholderTextColor={placeholder.color}
-      placeholder={placeholder.text}
+      placeholderTextColor='#6A686F'
+      placeholder={placeholder}
       onChangeText={changeHandler}
       value={value}
       secureTextEntry={secure}

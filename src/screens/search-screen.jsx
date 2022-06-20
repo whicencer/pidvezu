@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, ScrollView, TextInput } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
+import Input from '../components/ui/TextInput'
 
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../firebase'
@@ -30,34 +31,28 @@ const SearchScreen = () => {
     })
   }
 
-  const filteredData = filterBy(trips, 'route', search) || trips
+  const filteredData = filterBy(trips, 'route', search)
 
   return (
-    <ScrollView style={{ marginVertical: 20 }}>
+    <ScrollView style={{ marginBottom: 40, backgroundColor: '#16151C' }}>
       <View style={{ flex: 1, margin: 20 }}>
-        <TextInput
-          placeholderTextColor='#555'
+        <Input
+          changeHandler={text => setSearch(text)}
           placeholder='Пошук...'
-          style={styles.input}
+          secure={false}
           value={search}
-          onChangeText={text => setSearch(text)}
         />
-        {
-          filteredData?.length ? filteredData.map((trip, key) => {
-            return <UserTrips trip={trip} key={key} />
-          }) : <Text style={{ fontSize: 16, color: '#000' }}>Немає активних поїздок...</Text>
-        }
+        <View style={{ marginTop: 15 }}>
+          <Text style={{ color: '#fff', fontSize: 20, fontWeight: '600' }}>Всього поїздок: {filteredData.length}</Text>
+          {
+            filteredData?.length ? filteredData.map((trip, key) => {
+              return <UserTrips trip={trip} key={key} />
+            }) : <Text style={{ fontSize: 16, color: '#000' }}>Немає активних поїздок...</Text>
+          }
+        </View>
       </View>
     </ScrollView>
   )
 }
 
 export default SearchScreen
-
-const styles = StyleSheet.create({
-  input: {
-    elevation: 1,
-    padding: 10,
-    marginBottom: 10
-  }
-})

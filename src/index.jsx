@@ -29,17 +29,17 @@ const Tabs = () => {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#8b8b8b',
-        tabBarInactiveTintColor: 'gray',
-        tabBarStyle: { position: 'absolute', backgroundColor: '#262626' },
+        tabBarActiveTintColor: '#443E4F',
+        tabBarInactiveTintColor: '#585471',
+        tabBarStyle: { position: 'absolute', backgroundColor: '#111016' },
       })}
     >
       <Tab.Screen
         name='Home'
         options={{
           tabBarLabel: 'Головна',
-          headerStyle: { backgroundColor: '#121118' },
-          headerTitleStyle: {color: 'red'},
+          headerStyle: { backgroundColor: '#111016' },
+          headerTitleStyle: {color: '#fff'},
           headerTitle: 'Головна'
         }}
         component={HomeScreen}
@@ -48,8 +48,8 @@ const Tabs = () => {
         name='Add'
         options={{
           tabBarLabel: 'Додати поїздку',
-          headerStyle: { backgroundColor: '#121118' },
-          headerTitleStyle: { color: 'red' },
+          headerStyle: { backgroundColor: '#111016' },
+          headerTitleStyle: { color: '#fff' },
           headerTitle: 'Додати поїздку'
         }}
         component={AddScreen}
@@ -57,6 +57,8 @@ const Tabs = () => {
       <Tab.Screen
         name='Search'
         options={{
+          headerStyle: { backgroundColor: '#111016' },
+          headerTitleStyle: { color: '#fff' },
           tabBarLabel: 'Пошук',
           headerTitle: 'Пошук'
         }}
