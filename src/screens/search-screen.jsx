@@ -5,20 +5,24 @@ import Input from '../components/ui/TextInput'
 import { getDocs, collection } from 'firebase/firestore'
 import { db } from '../firebase'
 
+import { useDispatch, useSelector } from 'react-redux'
+
 import UserTrips from '../components/user-trips';
+import { addGlobalTrip } from '../store/reducers/trips';
 
 const SearchScreen = () => {
-  const [trips, setTrips] = useState([])
+  const globalTrips = useSelector(state => state.trips.globalTrips)
   const [search, setSearch] = useState('')
+  const dispatch = useDispatch()
 
   useEffect(() => {
     getDocs(collection(db, 'trips'))
       .then((snapshot) => {
-        setTrips(
+        dispatch(addGlobalTrip(
           snapshot.docs.map(doc => {
             return doc.data()
           })
-        )
+        ))
       })
   }, [])
 
@@ -31,7 +35,7 @@ const SearchScreen = () => {
     })
   }
 
-  const filteredData = filterBy(trips, 'route', search)
+  const filteredData = filterBy(globalTrips, 'route', search)
 
   return (
     <ScrollView style={{ marginBottom: 40, backgroundColor: '#16151C' }}>

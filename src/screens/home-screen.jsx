@@ -14,7 +14,7 @@ import { addTrip } from '../store/reducers/trips'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
-  const { trips } = useSelector(state => state.trips)
+  const userTrips = useSelector(state => state.trips.userTrips)
   const dispatch = useDispatch()
   
   useEffect(() => {
@@ -47,7 +47,7 @@ const HomeScreen = () => {
         <Text style={{ fontSize: 24, color: '#fff', fontWeight: 'bold', marginLeft: 25 }}>Мої поїздки:</Text>
         <View style={styles.trips}>
           {
-            trips?.length ? trips?.map((el, key) => {
+            userTrips.length ? userTrips.map((el, key) => {
               return <UserTrips key={key} trip={el} />
             }) : <Text style={{ fontSize: 16, color: '#f0f0f0' }}>Немає...</Text>
           }

@@ -3,16 +3,9 @@ import React, { useState } from 'react'
 import AddTripForm from '../components/addTripForm'
 
 const AddScreen = () => {
-  const [input, setInput] = useState({
-    name: '',
-    phone: '',
-    date: new Date(),
-    passengers: 0,
-    route: ''
-  })
   return (
     <View style={styles.container}>
-      <AddTripForm input={input} setInput={setInput} />
+      <AddTripForm />
     </View>
   )
 }

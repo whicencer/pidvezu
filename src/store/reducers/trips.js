@@ -3,15 +3,19 @@ import { createSlice } from '@reduxjs/toolkit'
 export const tripSlice = createSlice({
   name: 'trips',
   initialState: {
-    trips: []
+    userTrips: [],
+    globalTrips: []
   },
   reducers: {
     addTrip: (state, action) => {
-      state.trips = action.payload
+      state.userTrips = action.payload
+    },
+    addGlobalTrip: (state, action) => {
+      state.globalTrips = action.payload
     }
   }
 })
 
 
-export const { addTrip } = tripSlice.actions
+export const { addTrip, addGlobalTrip } = tripSlice.actions
 export default tripSlice.reducer

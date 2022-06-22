@@ -1,11 +1,11 @@
-import { StyleSheet, TextInput, View, Pressable, Text, Button, Dimensions } from 'react-native'
+import { StyleSheet, TextInput, View, Pressable, Text, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { phoneValidation } from '../utils/validators/phoneValidation'
 import InputSpinner from "react-native-input-spinner"
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Platform } from 'expo-modules-core'
 import Icon from 'react-native-vector-icons/Ionicons'
-import Map from './road-map'
+import { useSelector, useDispatch } from 'react-redux';
 
 import { db } from '../firebase'
 import { doc, setDoc } from 'firebase/firestore'
@@ -13,11 +13,19 @@ import { getAuth } from "@firebase/auth";
 import { getAddress } from '../utils/getAddress'
 import { useNavigation } from '@react-navigation/native'
 import PlaceInput from './place-input'
+import { setDate, setName, setPassengers, setPhone, setRoute } from '../store/reducers/createData'
+import { addGlobalTrip, addTrip } from '../store/reducers/trips'
 
-const AddTripForm = ({ input, setInput }) => {
+const AddTripForm = () => {
   const [mode, setMode] = useState('date')
   const [show, setShow] = useState(false)
   const [mapShow, setMapShow] = useState(false)
+
+  // Redux
+  const dispatch = useDispatch()
+  const createData = useSelector(state => state.createData)
+  const globalTrips = useSelector(state => state.trips.globalTrips)
+  const userTrips = useSelector(state => state.trips.userTrips)
 
   const navigation = useNavigation() 
 
@@ -35,9 +43,9 @@ const AddTripForm = ({ input, setInput }) => {
   });
 
   const onChange = (_, selectedDate) => {
-    const currentDate = selectedDate || input.date
+    const currentDate = selectedDate || createData.date
     setShow(Platform.OS === 'ios')
-    setInput({...input, date: currentDate})
+    dispatch(setDate(currentDate))
   }
 
   const showMode = currentMode => {
@@ -50,11 +58,13 @@ const AddTripForm = ({ input, setInput }) => {
     const myDoc = doc(db, `user_${getAuth().currentUser.uid}`, `trip_${randomId}`)
     const globalDoc = doc(db, 'trips', `trip_${randomId}`)
   
-    const docData = input
+    const docData = createData
 
     setDoc(myDoc, docData)
       .then(() => {
         setDoc(globalDoc, docData)
+        dispatch(addTrip([...userTrips, docData]))
+        dispatch(addGlobalTrip([...globalTrips, docData]))
         navigation.navigate('Home')
         alert('Поїздку добавлено')
       })
@@ -73,16 +83,16 @@ const AddTripForm = ({ input, setInput }) => {
             <TextInput
               placeholder="Ваше ім'я"
               placeholderTextColor='#6A686F'
-              value={ input.name }
-              onChangeText={(text) => setInput({...input, name: text})}
+              value={ createData.name }
+              onChangeText={(text) => dispatch(setName(text))}
               style={styles.textInput}
             />
             <TextInput
               placeholder="Ваш номер телефону"
               placeholderTextColor='#6A686F'
-              value={ input.phone }
+              value={ createData.phone }
               keyboardType='phone-pad'
-              onChangeText={(text) => setInput({...input, phone: text})}
+              onChangeText={(text) => dispatch(setPhone(text))}
               style={{ ...styles.textInput, marginTop: 20 }}
             />
             <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -102,21 +112,19 @@ const AddTripForm = ({ input, setInput }) => {
                 max={5}
                 min={1}
                 step={1}
-                value={input.passengers}
+                value={createData.passengers}
                 skin='modern'
-                onChange={(num) => {
-                  setInput({...input, passengers: num})
-                }}
+                onChange={(num) => dispatch(setPassengers(num))}
                 buttonStyle={{ backgroundColor: '#2A2631' }}
                 inputStyle={{ backgroundColor: '#6A686F', color: '#fff', fontWeight: 'bold' }}
                 style={{ backgroundColor: '#2A2631' }}
               />
             </View>
             <Pressable style={styles.buttonAdd} onPress={() => {
-              if(input.name.length < 1) {
+              if(createData.name.length < 1) {
                 alert('Помилка')
               } else {
-                phoneValidation(input.phone, () => createTrip(), () => alert('помилка'))
+                phoneValidation(createData.phone, () => createTrip(), () => alert('помилка'))
               }
             }}>
               <Text style={{ color: '#fff' }}>Створити поїздку</Text>
@@ -129,7 +137,7 @@ const AddTripForm = ({ input, setInput }) => {
         show && (
           <DateTimePicker
             testID='dateTimePicker'
-            value={input.date}
+            value={createData.date}
             mode={mode}
             is24Hour={true}
             display='default'
@@ -144,10 +152,7 @@ const AddTripForm = ({ input, setInput }) => {
             <PlaceInput placeholder={'Куди'} setCoord={settoCoord} />
             <View>
               <Pressable onPress={() => {
-                getAddress(fromCoord, toCoord)
-                  .then(data => {
-                    setInput({ ...input, route: data, fromCoord: fromCoord, toCoord: toCoord })
-                  })
+                getAddress(fromCoord, toCoord).then(data => dispatch(setRoute(data)))
                 setMapShow(false)
               }} style={{ ...styles.button, backgroundColor: '#2A2631' }}>
                 <Text style={{ color: '#fff' }}>Далі</Text>
